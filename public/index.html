@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Save Organizer</title>
+
+  <!-- Firebase SDK v9 -->
+  <script defer src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
+</head>
+
+<body onload="init()">
+  <div class="w3-content" style="max-width:2000px;margin-top:46px">
+    <div class="w3-container w3-content w3-center w3-padding-16" style="max-width:800px">
+      <h1 class="text-color text-bold">Save Organizer</h1>
+      <h3 class="text-color-light text-bold">By The amazing community</h3>
+      <h3 class="text-color-medium">Instructions</h3>
+      <p class="stars-par text-color">This is a tool created to maintain save files for Exponential Idle.
+        Saves are stored as base64 encoded string, which can be obtained from the game by going to Settings,
+        Import/Export and clicking on Export to clipboard. This generates the save string and copies it to the
+        clipboard.</p>
+      <p class="stars-par text-color">
+        Click on "Add/Edit Save" and paste in the save string generated from the app in the text area labeled
+        export. Note down and keep the following data points handy, to fill in the "Add a new Save" dialog. This
+        will help you identify saves later on:</p>
+      <ul class="stars-par text-color list-horizontal">
+        <li>f(t)</li>
+        <li>Lifetime f(t)</li>
+        <li>μ</li>
+        <li>ψ</li>
+        <li>σ</li>
+      </ul>
+      <p class="stars-par text-color">Note that all the above fields are optional, but filling them is
+        recommended. If a save with the same name exists, it's values will be overwritten with the new ones</p>
+      <p class="stars-par text-color">Click on Existing Saves to list all previously saved Saves.
+        The <span class="fa fa-copy"></span> icon can be used to copy that save to the clipboard.
+        The <span class="fa fa-trash"></span> icon can be used to delete a particular save. <strong>Note that
+          this
+          action
+          cannot be reversed.</strong>
+      </p>
+
+      <div id="loader" class="lds-ring" style="display: none;">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="loginPanel">
+        <div id="login" class="show">
+          <button onclick="googleLogin()"> <span class="fa fa-google"></span> Login with Google</button>
+        </div>
+        <div id="loggedin" class="text-color text-bold hide">
+          Logged in as Name (<span onclick="logout()"><u> Log out. </u></span>)
+        </div>
+      </div>
+
+      <div id="content" class="hide">
+
+        <div class="w3-bar w3-black">
+          <button class="w3-bar-item w3-button tablink w3-gray" onclick="openTab(event,'saves')">Existing Saves
+          </button>
+          <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'panel')">Add a new Save</button>
+        </div>
+
+        <div class="w3-container tabs" id="panel" style="display:none">
+
+          <table class="text-color">
+            <caption>
+              <div class="w3-container color-very-light">
+                Add a new Save
+              </div>
+            </caption>
+            <tr>
+              <th scope="col"></th>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <label>Export</label>
+                <textarea class="w3-input" id="export"></textarea>
+              </td>
+            </tr>
+            <tr>
+              <td><label>Name</label><input class="w3-input" id="name" type="text"></td>
+              <td><label>f(t)</label><input class="w3-input" id="ft" type="text"></td>
+              <td><label>Lifetime f(t)</label><input class="w3-input" id="lft" type="text"></td>
+              <td><label>μ</label><input class="w3-input" id="mu" type="text"></td>
+              <td><label>ψ</label><input class="w3-input" id="psi" type="text"></td>
+              <td><label>σ</label><input class="w3-input" id="sigma" type="text"></td>
+
+            </tr>
+            <tr>
+              <td colspan="6">
+                <div id="addSave">
+                  <button class="stars-button color-light" id="save" onclick="newSave()"> Add</button>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+        </div>
+        <div class="w3-container tabs text-color" id="saves">
+          <table class="fill" id="existing-saves">
+            <caption>
+              <div class="w3-container color-very-light">
+                Existing Saves
+              </div>
+            </caption>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">f(t)</th>
+              <th scope="col">Lifetime f(t)</th>
+              <th scope="col">μ</th>
+              <th scope="col">ψ</th>
+              <th scope="col">σ</th>
+              <th scope="col">Copy</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </table>
+        </div>
+
+        <div class="text-colour w3-green hide" id="saved">
+          <span class="fa fa-check" id="save-text"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
